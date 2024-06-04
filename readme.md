@@ -8,7 +8,7 @@ On a simple OLED display like an SSD-1306, each pixel can be represented as eith
 
 ![smiley](https://i.imgur.com/bjSnnNr.png)
 
-The standard `FrameBuffer` class that comes with MicroPython as part of the build-in `framebuf` module allows for us to manipulate individual points across the display, specifying the value (on/off) of any pixel at any coordinate across the display.
+The standard `FrameBuffer` class that comes with MicroPython as part of the build-in `framebuf` module allows for us to manipulate individual pixels across the display, specifying the value (on/off) of any pixel at any coordinate across the display.
 
 However, when it comes to displaying pictures, that can be a bit challenging. Firstly, you can load a bytearray buffer into a `FrameBuffer` object. This is demonstrated in this repo [here](https://github.com/TimHanewich/MicroPython-SSD1306), with this repo also providing some foundational tools to make that a bit easier. However, encoding *all* images of *any* dimension is not easy using this method.
 
