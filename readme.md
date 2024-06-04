@@ -197,4 +197,5 @@ Note that, at the time of this writing, `Typewriter` is not case sensitive. Any 
     - [bitgraphics logo designed in PowerPoint](https://github.com/TimHanewich/bitgraphics/releases/download/1/bitgraphics_logo.pptx)
     - [bitgraphics logo as SVG](https://github.com/TimHanewich/bitgraphics/releases/download/1/bitgraphics.svg)
     - [bitgraphics logo as 128x64 image](https://github.com/TimHanewich/bitgraphics/releases/download/1/bg1.jpg)
+    - [Header image to this readme, designed in PowerPoint](https://github.com/TimHanewich/bitgraphics/releases/download/2/bitgraphics_header.pptx)
     - [3 hexagon pattern](https://github.com/TimHanewich/bitgraphics/releases/download/1/hexagons.png)
