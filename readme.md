@@ -10,9 +10,9 @@ On a simple OLED display like an SSD-1306, each pixel can be represented as eith
 
 The standard `FrameBuffer` class that comes with MicroPython as part of the build-in `framebuf` module allows for us to manipulate individual pixels across the display, specifying the value (on/off) of any pixel at any coordinate across the display.
 
-However, when it comes to displaying pictures, that can be a bit challenging. Firstly, you can load a bytearray buffer into a `FrameBuffer` object. This is demonstrated in this repo [here](https://github.com/TimHanewich/MicroPython-SSD1306), with this repo also providing some foundational tools to make that a bit easier. However, encoding *all* images of *any* dimension is not easy using this method.
+However, when it comes to displaying pictures, that can be a bit challenging. Firstly, you can load a bytearray buffer into a `FrameBuffer` object. This is demonstrated in this repo [here](https://github.com/TimHanewich/MicroPython-SSD1306), with this repo also providing some foundational tools to make that a bit easier. However, encoding *all* images of *any* dimension is not easy using this method, for various reasons.
 
-The `bitgraphics` module developed here provides the same functionality as the method described in the repo referenced above, and then some:
+The `bitgraphics` module developed here provides the same functionality as the method described in the repo referenced above, but also supports the following scenarios:
 - Encode any image of any dimension
 - Combine ("flatten") multiple graphics together into a single graphic
 - Tools for positioning these graphics in the display
@@ -121,7 +121,7 @@ bgg = bitgraphics.BitGraphicGroup()
 bgg.add(rocket, 12, 0) # position (x:12, y:0) 
 bgg.add(bolt, 0, 24) # position (0, 24) 
 bgg.add(plane, 24, 24) # position (24, 24)
-all_in_1 = bgg.flatten() # combine into a single bitgraphic
+all_in_1 = bgg.flatten() # combine into a single BitGraphic
 
 # display it
 bgd = bitgraphics.BitGraphicDisplay(i2c, 128, 64) # create new BitGraphicDisplay with width 128, height 64
@@ -134,7 +134,7 @@ In the example above, three 16x16 graphics are loaded as `BitGraphic` objects. T
 Keep in mind that once you have flattened multiple graphics into one, you can also use the `to_json` function of that `BitGraphic` to save into a file for later!
 
 ## Typing with `Typewriter`
-The `Typewriter` class within the `bitgraphics` module makes it easier to form words and sentences by "chaining together" alphanumeric characters. You can use the `Typewriter` class like this:
+The `Typewriter` class within the `bitgraphics` module makes it easier to form words and sentences by "chaining together" graphics of alphanumeric characters. You can use the `Typewriter` class like this:
 
 ```
 import machine
@@ -190,3 +190,5 @@ In the example above, the 24x24 letters "T", "I", and "M" are added and then use
 
 Note that, at the time of this writing, `Typewriter` is not case sensitive. Any letter, uppercase or lowercase, will be displayed as uppercase.
 
+## Graphics Repository
+I have collected some useful graphics in the graphics folder [here](./graphics/). Go there to read more!
