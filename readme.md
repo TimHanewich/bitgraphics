@@ -1,3 +1,5 @@
+![bitgraphics logo](https://i.imgur.com/Dh06Bit.png)
+
 # bitgraphics
 [`bitgraphics.py`](./src/bitgraphics.py) is a MicroPython module for displaying images, text, and other graphics on an [SSD-1306](https://www.adafruit.com/product/326) OLED display.
 
