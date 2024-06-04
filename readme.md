@@ -6,7 +6,7 @@ The `bitgraphics` module allows for you to easily encode and display images on a
 ## What does this do?
 On a simple OLED display like an SSD-1306, each pixel can be represented as either a **0** or a **1**. `0` would indicate that the pixel is in an *off* position (black) and `1` would indicate that the pixel is in an *on* position (white). For example, consider the following example:
 
-![smiley](https://i.imgur.com/bjSnnNr.png)
+![smiley](https://i.imgur.com/YXjU3YW.png)
 
 The standard `FrameBuffer` class that comes with MicroPython as part of the build-in `framebuf` module allows for us to manipulate individual pixels across the display, specifying the value (on/off) of any pixel at any coordinate across the display.
 
