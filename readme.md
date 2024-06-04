@@ -53,7 +53,7 @@ As you can see in the example above, by using `resize=(12,12)`, the image has be
 Finally, also note that you can batch convert a directory full of graphics using the `images_to_BitGraphics` function.
 
 ### Displaying the `BitGraphic`
-Before running, ensure you are placing the [`ssd1306.py` module]() and [`bitgraphics.py` module]() on your microcontroller at the root level. These are two dependencies of the following code:
+Before running, ensure you are placing the [`ssd1306.py` module](./src/ssd1306.py) and [`bitgraphics.py` module](./src/bitgraphics.py) on your microcontroller at the root level. These are two dependencies of the following code:
 
 The following opens the `paw.json` file we converted and saved earlier and displays it on the display at position (0, 0) (top left).
 ```
