@@ -1,7 +1,7 @@
 # bitgraphics
 [`bitgraphics.py`](./src/bitgraphics.py) is a MicroPython module for displaying images, text, and other graphics on an [SSD-1306](https://www.adafruit.com/product/326) OLED display.
 
-The `bitgraphics` module allows for you to easily encode images that can easily be moved to a microcontroller like a Raspberry Pi Pico and display on an OLED display.
+The `bitgraphics` module allows for you to easily encode and display images on an OLED display via a microcontroller like a Raspberry Pi Pico.
 
 ## What does this do?
 On a simple OLED display like an SSD-1306, each pixel can be represented as either a **0** or a **1**. `0` would indicate that the pixel is in an *off* position (black) and `1` would indicate that the pixel is in an *on* position (white). For example, consider the following example:
