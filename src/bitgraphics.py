@@ -138,7 +138,7 @@ class BitGraphicGroup:
         """Returns the full height of the combined graphics"""
         return self.bottom - self.top
 
-    def fuse(self) -> BitGraphic:
+    def flatten(self) -> BitGraphic:
         """Combines all BitGraphics into a single BitGraphic."""
 
         ToReturn:BitGraphic = BitGraphic()
@@ -309,8 +309,8 @@ if sys.platform == "rp2":
                 # add it!
                 ToReturn.add(CorrectBG, ToReturn.width, 0)
 
-            # fuse and return
-            return ToReturn.fuse()
+            # flatten and return
+            return ToReturn.flatten()
 
 else: # all other platforms (windows, linux, etc.)
     
