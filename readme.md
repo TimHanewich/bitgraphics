@@ -192,4 +192,9 @@ In the example above, the 24x24 letters "T", "I", and "M" are added and then use
 Note that, at the time of this writing, `Typewriter` is not case sensitive. Any letter, uppercase or lowercase, will be displayed as uppercase.
 
 ## Graphics Repository
-I have collected some useful graphics in the graphics folder [here](./graphics/). Go there to read more!
+- I have collected some useful graphics in the graphics folder [here](./graphics/). Go there to read more!
+- bitgraphics branding and other material used in this repo:
+    - [bitgraphics logo designed in PowerPoint](https://github.com/TimHanewich/bitgraphics/releases/download/1/bitgraphics_logo.pptx)
+    - [bitgraphics logo as SVG](https://github.com/TimHanewich/bitgraphics/releases/download/1/bitgraphics.svg)
+    - [bitgraphics logo as 128x64 image](https://github.com/TimHanewich/bitgraphics/releases/download/1/bg1.jpg)
+    - [3 hexagon pattern](https://github.com/TimHanewich/bitgraphics/releases/download/1/hexagons.png)
