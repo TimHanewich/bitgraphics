@@ -84,8 +84,6 @@ class BitGraphic:
         txt:str = f.read()
         self.from_json(txt)
 
-
-
 class BitGraphicGroup:
     def __init__(self) -> None:
         self.BitGraphics:list[tuple[BitGraphic, int, int]] = [] # tuple of (BitGraphic, width, height)
