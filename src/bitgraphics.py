@@ -229,11 +229,11 @@ class BitDelta:
 
         # convert to two bytes
         i = int(InBits, 2)
-        return i.to_bytes(2, byteorder="big")
+        return i.to_bytes(2, "big")
     
     def decode(self, bs:bytes) -> None:
 
-        i:int = int.from_bytes(bs, byteorder="big")
+        i:int = int.from_bytes(bs, "big")
         binstr:str = self._zfill(bin(i)[2:], 16)
 
         # placeholder
