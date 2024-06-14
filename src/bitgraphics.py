@@ -263,6 +263,7 @@ class BitDelta:
             self.value = False
 
     def zfill(self, original:str, length:int) -> str:
+        """str.zfill is not available in MicroPython. So made up this manual process instead."""
         ToReturn:str = original
         while len(original) < length:
             ToReturn = "0" + ToReturn
