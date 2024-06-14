@@ -212,13 +212,13 @@ class BitDelta:
         # x:
         if self.x > 127 or self.x < 0:
             raise Exception("Unable to encode X value '" + str(self.x) + "' as 7 bits. Must be between 127 and 0 (inclusive).")
-        xbin:str = bin(self.x)[2:].zfill(7)
+        xbin:str = self._zfill(bin(self.x)[2:], 7)
         InBits = InBits + xbin
 
         # y:
         if self.y > 127 or self.y < 0:
             raise Exception("Unable to encode Y value '" + str(self.y) + "' as 6 bits. Must be between 63 and 0 (inclusive).")
-        ybin:str = bin(self.y)[2:].zfill(6)
+        ybin:str = self._zfill(bin(self.y)[2:], 6)
         InBits = InBits + ybin
 
         # value (pixel should change to on or off?)
@@ -234,7 +234,7 @@ class BitDelta:
     def decode(self, bs:bytes) -> None:
 
         i:int = int.from_bytes(bs, byteorder="big")
-        binstr:str = bin(i)[2:].zfill(16)
+        binstr:str = self._zfill(bin(i)[2:], 16)
 
         # placeholder
         if binstr[0] == "1":
