@@ -264,10 +264,7 @@ class BitDelta:
 
     def zfill(self, original:str, length:int) -> str:
         """str.zfill is not available in MicroPython. So made up this manual process instead."""
-        ToReturn:str = original
-        while len(ToReturn) < length:
-            ToReturn = "0" + ToReturn
-        return ToReturn
+        return ("0" * (length - len(original))) + original
 
 class BitGraphicDelta:
     """A direct comparison between two BitGraphics of identical sizes, takes note of the specific pixels that need to change to transform the first BitGraphic into the second."""
