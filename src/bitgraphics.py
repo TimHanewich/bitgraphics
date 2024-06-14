@@ -181,6 +181,7 @@ class BitGraphicGroup:
 class BitDelta:
     """Describes how a particular pixel needs to change from frame to frame."""
     def __init__(self) -> None:
+        self.placeholder:bool = False # 1 bit - represents that this BitDelta is actually NOT describing an actual pixel change. Instead, it is more of a placeholder, just serving in a sequence of BitDelta's so it is clear that another frame has been reached but there were no changes in this frame (identical image!)
         self.new_frame:bool = False # 1 bit
         self.x:int = 0 # 7 bits (min of 0, max of 127)
         self.y:int = 0 # 6 bits (min of 0, max of 63)
@@ -195,6 +196,12 @@ class BitDelta:
 
         # what we will construct
         InBits:str = ""
+
+        # placeholder only?
+        if self.placeholder:
+            InBits = InBits + "1"
+        else:
+            InBits = InBits + "0"
 
         # New frame?
         if self.new_frame:
@@ -219,9 +226,6 @@ class BitDelta:
             InBits = InBits + "1"
         else:
             InBits = InBits + "0"
-        
-        # Above is 15 bits. The last bit is reserved (unused). So just add 0
-        InBits = InBits + "0"
 
         # convert to two bytes
         i = int(InBits, 2)
