@@ -408,10 +408,12 @@ class BitAnimation:
 
 
 # Only if on pi
-if sys.platform == "rp2":
+#if sys.platform == "rp2":
+if 1 == 1:
     import ssd1306
     import machine
     import json
+    import time
 
     class BitGraphicDisplay:
 
@@ -465,6 +467,39 @@ if sys.platform == "rp2":
                     elif bg.bits[BitIndex] == True:
                         self.oled.pixel(pix_x, pix_y, 1)
         
+        def play(self, ba:BitAnimation, frame_rate:int = 30) -> None:
+            """Play a BitAnimation."""
+
+            # calculate the delay time in between frames that is appropriate
+            frame_delay_ms:int = int(round(1000 / frame_rate, 0))
+
+            # clear the display
+            self.clear()
+            self.show()
+
+            # go through each bit graphic delta the BitAnimation gives (until there are no more)
+            while True:
+                bgd:BitGraphicDelta = ba.read()
+                if bgd == None:
+                    break
+
+                # flip all necessary pixels
+                for bd in bgd._deltas:
+                    self.oled.pixel(bd.x, bd.y, int(bd.value))
+
+                # show
+                self.show()
+
+                # stall to make the frame rate correct
+                time.sleep_ms(frame_delay_ms)
+
+
+            # clean up
+            self.clear()
+            self.show()
+            ba.close()
+
+
     class Typewriter:
 
         def __init__(self) -> None:
