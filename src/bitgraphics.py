@@ -236,22 +236,28 @@ class BitDelta:
         i:int = int.from_bytes(bs, byteorder="big")
         binstr:str = bin(i)[2:].zfill(16)
 
-        # new frame
+        # placeholder
         if binstr[0] == "1":
+            self.placeholder = True
+        else:
+            self.placeholder = False
+
+        # new frame
+        if binstr[1] == "1":
             self.new_frame = True
         else:
             self.new_frame == False
 
         # x 
-        xbin:str = binstr[1:8]
+        xbin:str = binstr[2:9]
         self.x = int(xbin, 2)
        
         # y
-        ybin:str = binstr[8:14]
+        ybin:str = binstr[9:15]
         self.y = int(ybin, 2)
         
         # value
-        if binstr[14] == "1":
+        if binstr[15] == "1":
             self.value = True
         else:
             self.value = False
