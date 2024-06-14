@@ -179,6 +179,7 @@ class BitGraphicGroup:
 
 
 class BitDelta:
+    """Describes how a particular pixel needs to change from frame to frame."""
     def __init__(self) -> None:
         self.new_frame:bool = False
         self.x:int = 0
@@ -252,6 +253,7 @@ class BitDelta:
             self.value = False
 
 class BitGraphicDelta:
+    """A direct comparison between two BitGraphics of identical sizes, takes note of the specific pixels that need to change to transform the first BitGraphic into the second."""
     def __init__(self, bg1:BitGraphic = None, bg2:BitGraphic = None) -> None:
 
         # declare internal variables
@@ -314,8 +316,72 @@ class BitGraphicDelta:
             bd.decode(chunk)
             self._deltas.append(bd)
 
+class BitAnimation:
+    """Multiple BitGraphicDelta's stitched together (frame by frame) to form an animation (video)."""
+    def __init__(self, path:str, mode:str) -> None:
+        
+        # internal variable (needed for read function, see below)
+        self._BitDeltaInWaiting:BitDelta = None
+        
+        # set mode
+        if mode.lower() not in ["r", "w"]:
+            raise Exception("Mode '" + str(mode) + " not recognized. Must be w or r")
+        self._mode = mode.lower() # not changeable
 
+        # open it according to what mode we are in
+        if self._mode == "w":
+            self._f = open(path, "wb")
+        elif self._mode == "r":
+            self._f = open(path, "rb")
+
+    def write(self, bgd:BitGraphicDelta) -> None:
+        # check that we are in write mode
+        if self._mode != "w":
+            raise Exception("Unable to write! Not in write mode. Create a new BitAnimation instance in write mode to write.")
+        
+        # write
+        self._f.write(bgd.encode())
+
+    def read(self) -> BitGraphicDelta:
+        # check that we are in write mode
+        if self._mode != "r":
+            raise Exception("Unable to read! Not in read mode. Create a new BitAnimation instance in read mode to read.")       
+
+        # add if there is one in waiting
+        NextFrame:list[BitDelta] = []
+        if self._BitDeltaInWaiting != None:
+            NextFrame.append(self._BitDeltaInWaiting)
+
+        # read continuously until we are on another frame!
+        while True:
             
+            # read next two bytes
+            nextbytes:bytes = self._f.read(2)
+            if nextbytes == None: # no bytes left
+                if len(NextFrame) > 0:
+                    bgd:BitGraphicDelta = BitGraphicDelta()
+                    bgd._deltas = NextFrame
+                    return bgd
+                else:
+                    return None
+
+            # decode to a BitDelta
+            bd:BitDelta = BitDelta()
+            bd.decode(nextbytes)
+
+            if bd.new_frame and len(NextFrame) > 0: # if it is a new frame indicated and we have frames saved up in the collection, time to cut off! Return this frame's and move it along!
+                self._BitDeltaInWaiting = bd # this one we are on right now is the first of the next frame. So we have to save it here for next time.
+                bgd:BitGraphicDelta = BitGraphicDelta()
+                bgd._deltas = NextFrame
+                return bgd
+            else: # it is not a new frame
+                NextFrame.append(bd)
+
+
+    def close(self) -> None:
+        self._f.close()
+        
+
 
 # Only if on pi
 if sys.platform == "rp2":
