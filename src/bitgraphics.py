@@ -352,6 +352,14 @@ class BitAnimation:
         if self._mode != "w":
             raise Exception("Unable to write! Not in write mode. Create a new BitAnimation instance in write mode to write.")
         
+        # if there are ZERO deltas (they are identical images, from frame to frame), insert one, but make it a placeholder.
+        # the placeholder flag is there so that the microcontroller running the SSD-1306 knows that it is a new frame BUT to also not intepret the following values and make a change to a pixel
+        if len(bgd._deltas) == 0:
+            bbd:BitDelta = BitDelta()
+            bbd.placeholder = True
+            bbd.new_frame = True
+            bgd._deltas.append(bbd)
+
         # write
         self._f.write(bgd.encode())
 
