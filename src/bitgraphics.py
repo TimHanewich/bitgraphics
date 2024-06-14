@@ -299,6 +299,8 @@ class BitGraphicDelta:
     def encode(self) -> bytes:
         ToReturn:bytearray = bytearray()
         for bd in self._deltas:
+            if bd == self._deltas[0]: # if this is the very first one, turn on the new frame flag
+                bd.new_frame = True
             ToReturn.extend(bd.encode())
         return bytes(ToReturn)
 
@@ -317,7 +319,7 @@ class BitGraphicDelta:
             self._deltas.append(bd)
 
 class BitAnimation:
-    """Multiple BitGraphicDelta's stitched together (frame by frame) to form an animation (video)."""
+    """Facilitates storage I/O of multiple BitGraphicDelta's stitched together (frame by frame) to form an animation (video)."""
     def __init__(self, path:str, mode:str) -> None:
         
         # internal variable (needed for read function, see below)
@@ -335,6 +337,7 @@ class BitAnimation:
             self._f = open(path, "rb")
 
     def write(self, bgd:BitGraphicDelta) -> None:
+        """Write a BitGraphicDelta to file (append)."""
         # check that we are in write mode
         if self._mode != "w":
             raise Exception("Unable to write! Not in write mode. Create a new BitAnimation instance in write mode to write.")
@@ -343,6 +346,8 @@ class BitAnimation:
         self._f.write(bgd.encode())
 
     def read(self) -> BitGraphicDelta:
+        """Read the next BitGraphicDelta in the file."""
+
         # check that we are in write mode
         if self._mode != "r":
             raise Exception("Unable to read! Not in read mode. Create a new BitAnimation instance in read mode to read.")       
@@ -351,13 +356,14 @@ class BitAnimation:
         NextFrame:list[BitDelta] = []
         if self._BitDeltaInWaiting != None:
             NextFrame.append(self._BitDeltaInWaiting)
+            self._BitDeltaInWaiting = None
 
         # read continuously until we are on another frame!
         while True:
             
             # read next two bytes
-            nextbytes:bytes = self._f.read(2)
-            if nextbytes == None: # no bytes left
+            nextbytes:bytes = self._f.read(len(BitDelta().encode()))
+            if len(nextbytes) == 0: # no bytes left
                 if len(NextFrame) > 0:
                     bgd:BitGraphicDelta = BitGraphicDelta()
                     bgd._deltas = NextFrame
@@ -377,8 +383,8 @@ class BitAnimation:
             else: # it is not a new frame
                 NextFrame.append(bd)
 
-
     def close(self) -> None:
+        """Close the opened file."""
         self._f.close()
         
 
