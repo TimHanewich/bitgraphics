@@ -303,13 +303,19 @@ class BitGraphicDelta:
     def decode(self, data:bytes) -> None:
         """Decodes bytes into deltas"""
 
+        # clear
+        self._deltas.clear()
+
         # loop through them in chunks of five
-        for i in range(0, len(data), 5):
-            chunk = data[i:i+5]
-            print(chunk)
+        chunk_length:int = len(BitDelta().encode()) # sample the encoded length (in bytes) of a BitDelta
+        for i in range(0, len(data), chunk_length):
+            chunk:bytes = data[i:i+chunk_length]
+            bd:BitDelta = BitDelta()
+            bd.decode(chunk)
+            self._deltas.append(bd)
 
 
-
+            
 
 # Only if on pi
 if sys.platform == "rp2":
