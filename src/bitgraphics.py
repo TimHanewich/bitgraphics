@@ -188,7 +188,7 @@ class BitDelta:
         self.value:bool = False # 1 bit
 
     def __str__(self) -> str:
-        d = {"new_frame": self.new_frame, "x": self.x, "y": self.y, "value": self.value}
+        d = {"placeholder": self.placeholder, "new_frame": self.new_frame, "x": self.x, "y": self.y, "value": self.value}
         return str(d)
 
     def encode(self) -> bytes:
