@@ -414,8 +414,7 @@ class BitAnimation:
 
 
 # Only if on pi
-#if sys.platform == "rp2":
-if 1 == 1:
+if sys.platform == "rp2":
     import ssd1306
     import machine
     import json
