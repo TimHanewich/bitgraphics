@@ -178,6 +178,138 @@ class BitGraphicGroup:
 
 
 
+class BitDelta:
+    def __init__(self) -> None:
+        self.new_frame:bool = False
+        self.x:int = 0
+        self.y:int = 0
+        self.value:bool = False
+
+    def __str__(self) -> str:
+        d = {"new_frame": self.new_frame, "x": self.x, "y": self.y, "value": self.value}
+        return str(d)
+
+    def encode(self) -> bytes:
+        """Encodes the BitDelta as two bytes"""
+
+        # what we will construct
+        InBits:str = ""
+
+        # New frame?
+        if self.new_frame:
+            InBits = InBits + "1"
+        else:
+            InBits = InBits + "0"
+
+        # x:
+        if self.x > 127 or self.x < 0:
+            raise Exception("Unable to encode X value '" + str(self.x) + "' as 7 bits. Must be between 127 and 0 (inclusive).")
+        xbin:str = bin(self.x)[2:].zfill(7)
+        InBits = InBits + xbin
+
+        # y:
+        if self.y > 127 or self.y < 0:
+            raise Exception("Unable to encode Y value '" + str(self.y) + "' as 6 bits. Must be between 63 and 0 (inclusive).")
+        ybin:str = bin(self.y)[2:].zfill(6)
+        InBits = InBits + ybin
+
+        # value (pixel should change to on or off?)
+        if self.value:
+            InBits = InBits + "1"
+        else:
+            InBits = InBits + "0"
+        
+        # Above is 15 bits. The last bit is reserved (unused). So just add 0
+        InBits = InBits + "0"
+
+        # convert to two bytes
+        i = int(InBits, 2)
+        return i.to_bytes(2, byteorder="big")
+    
+    def decode(self, bs:bytes) -> None:
+
+        i:int = int.from_bytes(bs, byteorder="big")
+        binstr:str = bin(i)[2:].zfill(16)
+
+        # new frame
+        if binstr[0] == "1":
+            self.new_frame = True
+        else:
+            self.new_frame == False
+
+        # x 
+        xbin:str = binstr[1:8]
+        self.x = int(xbin, 2)
+       
+        # y
+        ybin:str = binstr[8:14]
+        self.y = int(ybin, 2)
+        
+        # value
+        if binstr[14] == "1":
+            self.value = True
+        else:
+            self.value = False
+
+class BitGraphicDelta:
+    def __init__(self, bg1:BitGraphic = None, bg2:BitGraphic = None) -> None:
+
+        # declare internal variables
+        self._deltas:list[BitDelta] = []
+        
+        # if we were given two, do it!
+        if bg1 != None and bg2 != None:
+            self.compare(bg1, bg2)
+            
+    def compare(self, bg1:BitGraphic, bg2:BitGraphic) -> None:
+
+        # check for same size
+        if bg1.width != bg2.width or bg1.height != bg2.height:
+            raise Exception("Unable to calculate BitDelta: both BitGraphics must have the same dimensions!")
+        
+
+        # clear our list of current deltas
+        self._deltas.clear()
+
+        # loop through each, look for differences
+        # differences stored in a 3-part tuple: [x:int, y:int, value:bool]
+        for y in range(0, bg1.height):
+            for x in range(0, bg1.width):
+                v1:bool = bg1.bit(x, y)
+                v2:bool = bg2.bit(x, y)
+                if v2 != v1:
+                    bd = BitDelta()
+                    
+                    # if it is 0,0, set new frame to true
+                    if x == 0 and y == 0:
+                        bd.new_frame = True
+                    else:
+                        bd.new_frame = False
+
+                    # set other values
+                    bd.x = x
+                    bd.y = y
+                    bd.value = v2
+
+                    # append
+                    self._deltas.append(bd)
+                    
+    def encode(self) -> bytes:
+        ToReturn:bytearray = bytearray()
+        for bd in self._deltas:
+            ToReturn.extend(bd.encode())
+        return bytes(ToReturn)
+
+    def decode(self, data:bytes) -> None:
+        """Decodes bytes into deltas"""
+
+        # loop through them in chunks of five
+        for i in range(0, len(data), 5):
+            chunk = data[i:i+5]
+            print(chunk)
+
+
+
 
 # Only if on pi
 if sys.platform == "rp2":
