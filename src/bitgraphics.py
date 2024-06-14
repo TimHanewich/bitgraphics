@@ -263,7 +263,7 @@ class BitDelta:
             self.value = False
 
     def _zfill(self, original:str, length:int) -> str:
-        """str.zfill is not available in MicroPython. So made up this manual process instead."""
+        """Pads a string with zeros on the left until it reaches a specified widthstr. 'str.zfill' is not available in MicroPython, so made up this manual process instead."""
         return ("0" * (length - len(original))) + original
 
 class BitGraphicDelta:
