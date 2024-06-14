@@ -262,7 +262,7 @@ class BitDelta:
         else:
             self.value = False
 
-    def zfill(self, original:str, length:int) -> str:
+    def _zfill(self, original:str, length:int) -> str:
         """str.zfill is not available in MicroPython. So made up this manual process instead."""
         return ("0" * (length - len(original))) + original
 
