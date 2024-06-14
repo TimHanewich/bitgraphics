@@ -391,7 +391,8 @@ class BitAnimation:
 
 
 # Only if on pi
-if sys.platform == "rp2":
+if 1==1:
+#if sys.platform == "rp2":
     import ssd1306
     import machine
     import json
@@ -459,22 +460,27 @@ if sys.platform == "rp2":
             self.clear()
             self.show()
 
-            # go through each bit graphic delta the BitAnimation gives (until there are no more)
+            # go through each BitDelta in the file
             while True:
-                bgd:BitGraphicDelta = ba.read()
-                if bgd == None:
+
+                bd:BitDelta = ba.read()
+                if bd == None: # we've reached end of file
                     break
 
-                # flip all necessary pixels
-                for bd in bgd._deltas:
+                # handle the BitDelta
+                if bd.new_frame == False: # not a new frame yet, so execute this pixel adjustment in preparation to show once we encounter a new frame
                     self.oled.pixel(bd.x, bd.y, int(bd.value))
+                else: # this next BitDelta marks the start of the new frame. So, the pixel changes we made previously are now ready to be shown. So show them! 
 
-                # show
-                self.show()
+                    # show the pixel changes we made previously
+                    self.show()
 
-                # stall to make the frame rate correct
-                time.sleep_ms(frame_delay_ms)
+                    # wait according to frame rate
+                    time.sleep_ms(frame_delay_ms)
 
+                    # execute this one
+                    if bd.placeholder == False:
+                        self.oled.pixel(bd.x, bd.y, int(bd.value))
 
             # clean up
             self.clear()
