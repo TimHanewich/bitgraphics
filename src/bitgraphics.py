@@ -262,6 +262,12 @@ class BitDelta:
         else:
             self.value = False
 
+    def zfill(self, original:str, length:int) -> str:
+        ToReturn:str = original
+        while len(original) < length:
+            ToReturn = "0" + ToReturn
+        return ToReturn
+
 class BitGraphicDelta:
     """A direct comparison between two BitGraphics of identical sizes, takes note of the specific pixels that need to change to transform the first BitGraphic into the second."""
     def __init__(self, bg1:BitGraphic = None, bg2:BitGraphic = None) -> None:
