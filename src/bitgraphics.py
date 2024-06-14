@@ -181,10 +181,10 @@ class BitGraphicGroup:
 class BitDelta:
     """Describes how a particular pixel needs to change from frame to frame."""
     def __init__(self) -> None:
-        self.new_frame:bool = False
-        self.x:int = 0
-        self.y:int = 0
-        self.value:bool = False
+        self.new_frame:bool = False # 1 bit
+        self.x:int = 0 # 7 bits (min of 0, max of 127)
+        self.y:int = 0 # 6 bits (min of 0, max of 63)
+        self.value:bool = False # 1 bit
 
     def __str__(self) -> str:
         d = {"new_frame": self.new_frame, "x": self.x, "y": self.y, "value": self.value}
